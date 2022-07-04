@@ -1,3 +1,15 @@
+local whitelist = {
+	"jeronimoxfelinor",
+	"blatantdefiance"
+
+}
+local baseplate = false
+local bringphrase = "Penguin, analysis."
+local dismissphrase = "Affirmative."
+
+
+
+print("Chat bot stand activated!")
 local HttpService = game:GetService("HttpService")
 local player = game:GetService("Players").LocalPlayer
 local char = player.Character or player.CharacterAdded:Wait()
@@ -21,9 +33,9 @@ end
 local function tween(plr)
 	if _G.is then
 		while _G.is do
-			local _G.whitelistcframe = plr.Character.HumanoidRootPart.CFrame
+			local whitelistcframe = plr.Character.HumanoidRootPart.CFrame
 			local offset = CFrame.new(3,0,3)
-			local newcframe = _G.whitelistcframe:ToWorldSpace(offset)
+			local newcframe = whitelistcframe:ToWorldSpace(offset)
 			local tween = tweenservice:Create(humpart,istweeninfo,{CFrame = newcframe})
 			tween:Play()
 			wait(.01)
@@ -33,27 +45,27 @@ local function tween(plr)
 		tween:Play()
 	end
 end
-if _G.baseplate then
+if baseplate then
 	local part = Instance.new("Part")
 	part.Parent = workspace
 	part.Anchored = true
 	part.Position = partpos
 	part.Size = Vector3.new(5,1,5)
-	wait(1)
+	wait(2)
 	tween()
 end
 plrs.PlayerAdded:Connect(function(plr)
 	local list = string.lower(plr.Name)
 	plr.Chatted:Connect(function(mes)
-		if table.find(_G.whitelist,list) then
-			if mes == _G.comeword and not _G.is then
+		if table.find(whitelist,list) then
+			if mes == bringphrase and not _G.is then
 				_G.is = true
 				coroutine.resume(coroutine.create(tween(plr)))
 			end
 			if _G.is then
-				if mes == _G.dismiss then
+				if mes == dismissphrase then
 					_G.is = false
-					if _G.baseplate then
+					if baseplate then
 						tween()
 					end
 				else
