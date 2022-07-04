@@ -3,8 +3,7 @@ local allwhitelisted = false
 
 local whitelist = {
 	"jeronimoxfelinor",
-	"blatantdefiance",
-	"penguinkowaski"
+	"blatantdefiance"
 }
 local baseplate = false
 local bringphrase = "Penguin, analysis."
@@ -59,7 +58,19 @@ if baseplate then
 	wait(2)
 	tween()
 end
-
+player.Chatted:Connect(function(text)
+	local split = string.split(text," ")
+	if split[1] == "!analysis" then
+		_G.is = true
+		tween(player)
+	end
+	if split[1] == "!affirmative" then
+		_G.is = false
+		if baseplate then
+			tween()
+		end
+	end
+end)
 for i, plr in pairs(allplrs) do
 	local newplayer = string.lower(plr.Name)
 	if table.find(whitelist, newplayer) or allwhitelisted then
