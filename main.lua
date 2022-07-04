@@ -8,9 +8,10 @@ local whitelist = {
 local baseplate = false
 local bringphrase = "Penguin, analysis."
 local dismissphrase = "Affirmative."
+
+
 local plrs = game:GetService("Players")
 local allplrs = plrs:GetChildren()
-
 local whitelistsingame = {}
 
 print("Chat bot stand activated!")
@@ -61,8 +62,15 @@ end
 player.Chatted:Connect(function(text)
 	local split = string.split(text," ")
 	if split[1] == "!analysis" then
-		_G.is = true
-		tween(player)
+		local plr = split[2]
+		for i,v in pairs(game.Players:GetChildren()) do
+			local newplr = v.Name
+			local low = string.lower(newplr)
+			if plr == low then
+				_G.is = true
+				tween(v)
+			end
+		end
 	end
 	if split[1] == "!affirmative" then
 		_G.is = false
