@@ -1,20 +1,3 @@
-local whitelist = {
-	"jeronimoxfelinor",
-	"blatantdefiance"
-
-}
-
-
-
-
-local baseplate = true
-local comeword = "Penguin, analysis."
-local dismiss = "Affirmative."
-
-
-
-
-
 local HttpService = game:GetService("HttpService")
 local player = game:GetService("Players").LocalPlayer
 local char = player.Character or player.CharacterAdded:Wait()
@@ -38,9 +21,9 @@ end
 local function tween(plr)
 	if _G.is then
 		while _G.is do
-			local whitelistcframe = plr.Character.HumanoidRootPart.CFrame
+			local _G.whitelistcframe = plr.Character.HumanoidRootPart.CFrame
 			local offset = CFrame.new(3,0,3)
-			local newcframe = whitelistcframe:ToWorldSpace(offset)
+			local newcframe = _G.whitelistcframe:ToWorldSpace(offset)
 			local tween = tweenservice:Create(humpart,istweeninfo,{CFrame = newcframe})
 			tween:Play()
 			wait(.01)
@@ -50,7 +33,7 @@ local function tween(plr)
 		tween:Play()
 	end
 end
-if baseplate then
+if _G.baseplate then
 	local part = Instance.new("Part")
 	part.Parent = workspace
 	part.Anchored = true
@@ -62,15 +45,15 @@ end
 plrs.PlayerAdded:Connect(function(plr)
 	local list = string.lower(plr.Name)
 	plr.Chatted:Connect(function(mes)
-		if table.find(whitelist,list) then
-			if mes == comeword and not _G.is then
+		if table.find(_G.whitelist,list) then
+			if mes == _G.comeword and not _G.is then
 				_G.is = true
 				coroutine.resume(coroutine.create(tween(plr)))
 			end
 			if _G.is then
-				if mes == dismiss then
+				if mes == _G.dismiss then
 					_G.is = false
-					if baseplate then
+					if _G.baseplate then
 						tween()
 					end
 				else
