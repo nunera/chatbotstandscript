@@ -18,9 +18,10 @@ local whitelistsingame = {
 
 
 for i,v in pairs(allplrs) do
+    local newplayer = string.lower(v.Name)
 	if table.find(whitelist,v) then
-		local newplayer = string.lower(v.Name)
 		table.insert(whitelistsingame,newplayer)
+		print(newplayer,"is whitelisted!")
 	end
 end
 
