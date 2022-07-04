@@ -6,8 +6,15 @@ local whitelist = {
 local baseplate = false
 local bringphrase = "Penguin, analysis."
 local dismissphrase = "Affirmative."
+local plrs = game:GetService("Players")
+local allplrs = plrs:GetChildren()
 
-
+for i,v in pairs(allplrs) do
+	if table.find(whitelist,v) then
+		local newplayer = string.lower(v.Name)
+		table.insert(whitelist,v)
+	end
+end
 
 print("Chat bot stand activated!")
 local HttpService = game:GetService("HttpService")
@@ -69,7 +76,18 @@ plrs.PlayerAdded:Connect(function(plr)
 						tween()
 					end
 				else
-					getChat(mes,plr.Name)
+					local sep = string.split(mes," ")
+					if sep[1] == "!add" then
+						local user = string.lower(sep[2])
+						table.insert(whitelist,user)
+					else
+						if sep[1] == "!remove" then
+							local user = string.lower(sep[2])
+							table.remove(whitelist,user)
+						else
+							getChat(mes,plr.Name)
+						end
+					end
 				end
 			end
 		end
