@@ -9,10 +9,18 @@ local dismissphrase = "Affirmative."
 local plrs = game:GetService("Players")
 local allplrs = plrs:GetChildren()
 
+local whitelistsingame = {
+	
+	
+	
+}
+
+
+
 for i,v in pairs(allplrs) do
 	if table.find(whitelist,v) then
 		local newplayer = string.lower(v.Name)
-		table.insert(whitelist,v)
+		table.insert(whitelistsingame,newplayer)
 	end
 end
 
