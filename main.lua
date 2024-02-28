@@ -28,11 +28,35 @@ local partpos = Vector3.new(5.741, 150.286, 21.387)
 local personCFrame = CFrame.new(5.74100018, 160.2860031, 21.3869991, 1, 0, 0, 0, 1, 0, 0, 0, 1)
 local plrs = game:GetService("Players")
 function getChat(message, plrname)
-    local HttpService = game:GetService("HttpService")
-    local Split = message:gsub(" ", "+") -- This takes spaces within the person's message and turns it into for ex: Hi+How+Are+You... to ensure that there are no errors and to also make the URL work
-    local Response = game:HttpGet("https://api.affiliateplus.xyz/api/chatbot?message=" .. Split)
-    local Data = HttpService:JSONDecode(Response)
-    game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer(Data.message, "All")
+    local apiKey = "YOUR_OPENAI_API_KEY" 
+    local endpoint = "https://api.openai.com/v1/completions"
+    local headers = {
+        ["Content-Type"] = "application/json",
+        ["Authorization"] = "Bearer " .. apiKey
+    }
+    local data = {
+        model = "gpt-3.5-turbo-0125",
+        messages = {
+            { role = "user", content = message } 
+        }, 
+        max_tokens = 100 -- Adjust the max response tokens as needed
+    }
+    local jsonData = HttpService:JSONEncode(data)
+    local response = HttpService:RequestAsync({
+        Url = endpoint,
+        Method = "POST",
+        Headers = headers,
+        Body = jsonData
+    })
+    if response.Success then
+        local decoded = HttpService:JSONDecode(response.Body)
+        if decoded.choices then
+            local chatResponse = decoded.choices[1].message.content
+            game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer(chatResponse, "All")
+        end
+    else
+        print("OpenAI API request failed: ", response.StatusCode, response.Body)
+    end
 end
 local function tween(plr)
     if _G.is then
