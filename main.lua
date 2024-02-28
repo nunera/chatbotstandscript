@@ -34,12 +34,12 @@ function getChat(message, plrname)
         ["Content-Type"] = "application/json",
         ["Authorization"] = "Bearer " .. apiKey
     }
+    local chatHistory = {}  -- Store the conversation history 
+
     local data = {
         model = "gpt-3.5-turbo-0125",
-        messages = {
-            { role = "user", content = message } 
-        }, 
-        max_tokens = 100 -- Adjust the max response tokens as needed
+        messages = chatHistory, -- Include previous messages
+        max_tokens = 100 
     }
     local jsonData = HttpService:JSONEncode(data)
     local response = HttpService:RequestAsync({
@@ -53,10 +53,15 @@ function getChat(message, plrname)
         if decoded.choices then
             local chatResponse = decoded.choices[1].message.content
             game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer(chatResponse, "All")
+            table.insert(chatHistory, {role = "user", content = message}) -- Add user message
+            table.insert(chatHistory, {role = "assistant", content = chatResponse}) -- Add bot response
         end
     else
         print("OpenAI API request failed: ", response.StatusCode, response.Body)
     end
+end
+function clearChatHistory()
+    chatHistory = {}
 end
 local function tween(plr)
     if _G.is then
@@ -98,6 +103,7 @@ player.Chatted:Connect(
         end
         if split[1] == "!affirmative" then
             _G.is = false
+            clearChatHistory()
             if baseplate then
                 tween()
             end
@@ -122,6 +128,7 @@ local function log()
                         if _G.is then
                             if mes == dismissphrase then
                                 _G.is = false
+                                clearChatHistory()
                                 if baseplate then
                                     tween()
                                 end
