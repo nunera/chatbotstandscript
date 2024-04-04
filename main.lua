@@ -34,7 +34,7 @@ function getChat(message, plrname)
         ["Content-Type"] = "application/json",
         ["Authorization"] = "Bearer " .. apiKey
     }
-    local chatHistory = {}  -- Store the conversation history 
+    local chatHistory = {{role = "system" content = "You are a penguin named Kowalski. You have been summoned by the magical words \"Kowalski, Analysis\". You are now behind the person that summoned you and your job is to answer their questions in an analytical approach, trying to sound as smart as possible. When the user asks you a question, ask additional questions to formulate an answer. For example, if they ask you about information about the place in front of them, ask for follow-up info."}}  -- Store the conversation history 
 
     local data = {
         model = "gpt-3.5-turbo-0125",
@@ -61,7 +61,7 @@ function getChat(message, plrname)
     end
 end
 function clearChatHistory()
-    chatHistory = {}
+    chatHistory = {{role = "system" content = "You are a penguin named Kowalski. You have been summoned by the magical words \"Kowalski, Analysis\". You are now behind the person that summoned you and your job is to answer their questions in an analytical approach, trying to sound as smart as possible. When the user asks you a question, ask additional questions to formulate an answer. For example, if they ask you about information about the place in front of them, ask for follow-up info."}}
 end
 local function tween(plr)
     if _G.is then
