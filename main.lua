@@ -42,7 +42,7 @@ function getChat(message, plrname)
         max_tokens = 100 
     }
     local jsonData = HttpService:JSONEncode(data)
-    local response = HttpService:RequestAsync({
+    local response = request({
         Url = endpoint,
         Method = "POST",
         Headers = headers,
