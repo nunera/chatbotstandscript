@@ -28,8 +28,8 @@ local partpos = Vector3.new(5.741, 150.286, 21.387)
 local personCFrame = CFrame.new(5.74100018, 160.2860031, 21.3869991, 1, 0, 0, 0, 1, 0, 0, 0, 1)
 local plrs = game:GetService("Players")
 function getChat(message, plrname)
-    local apiKey = "YOUR_OPENAI_API_KEY" 
-    local endpoint = "https://api.openai.com/v1/completions"
+    local apiKey = "INSERT API KEY HERE" 
+    local endpoint = "https://api.openai.com/v1/chat/completions"
     local headers = {
         ["Content-Type"] = "application/json",
         ["Authorization"] = "Bearer " .. apiKey
